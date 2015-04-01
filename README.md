@@ -13,6 +13,16 @@ A library to dynamically sort, group and aggregate any properties for a collecti
   *	**Min**: only supports numeric values and DateTime
   *	**Max**: only supports numeric values and DateTime
 
+`Row` class consists of the following properties
+* `ParentRow`: parent group, null if it’s the root
+*	`AggregateChildren`: a list of subgroups, null if it’s the most inner group or if it’s the leaf record
+*	`Children`: a list of leaf records, null if it’s not the most inner group or if it’s the leaf record
+*	`Values`: the actual object. For aggregate row, the object would contain the aggregate values for the properties specified in `aggregateParams`
+*	`AggregateName`: group name, e.g. Female for Gender
+
+### Caveat
+Since C# is strongly typed and **Values** from **Row** is of the same type as the object that you pass in, if you do an average on an object’s property that is of type int, it’ll return an int even though the correct average may be a decimal. 
+
 ## Sample Code
 ```csharp
 SortParameter[] sortInfo = new SortParameter[] 
@@ -31,6 +41,7 @@ AggregationParameter[] aggregateParams = new AggregationParameter[]
 };
 List<Row<Student>> studentRows = GridBuilder.BuildRows(students, sortInfo, groupings, aggregateParams);
 ```
+A more detailed unit test can be found in `GridBuilderTest.cs`
 
 ## License
 (The MIT License)
